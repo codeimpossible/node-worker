@@ -34,6 +34,19 @@ describe('Worker', function(){
       // assert
       assert.equal('test_worker', testWorker.config['worker_id'], "config wasn't loaded correctly!");
     })
+
+    it('should call any callback functions passed', function() {
+      testWorker = new Worker( helpers.successStoryBootstrap() );
+
+      try {
+        testWorker.init(function(){
+          throw "callback called!";
+        });
+        assert.ok(false, "Worker#init did not call the passed callback!");
+      } catch(e) {
+        assert.equal('callback called!', e);
+      }
+    })
   });
 });
 

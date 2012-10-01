@@ -16,6 +16,10 @@ var helpers = {
         return _contents;
       }
     }
+  },
+  successStoryBootstrap: function() {
+    var config = "worker_id: test_worker";
+    return this.fileSystemReturnsConfig(config);
   }
 };
 

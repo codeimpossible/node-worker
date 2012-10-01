@@ -6,7 +6,7 @@ function worker(_fs) {
   fs = _fs || fs; // allow ctor injection
   return {
     config: {},
-    init: function() {
+    init: function( callback ) {
       var result = fs.existsSync( __dirname + '/worker.yml');
 
       if(!result) throw "no config file!";
@@ -14,8 +14,7 @@ function worker(_fs) {
       var config = fs.readFileSync( __dirname + '/worker.yml', null);
       this.config = yaml.load(config);
 
-      util.puts('proggr worker v0.1 loaded! Welcome to the hive!');
-      util.puts('your ID: ' + this.config.worker_id );
+      if(callback) callback.call(this);
     }
   };
 }

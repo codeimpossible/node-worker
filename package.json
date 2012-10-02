@@ -5,10 +5,14 @@
   "version": "0.0.4",
   "main": "src\\app.js",
   "dependencies": {
-    "mocha": "1.5.0",
     "js-yaml": "1.0.2"
   },
+  "devDependencies": {
+    "mocha": "1.5.0",
+    "mocks": "*"
+  },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "autotest": "./node_modules/.bin/mocha --reporter dot --growl --watch"
   }
 }

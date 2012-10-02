@@ -1,13 +1,31 @@
-var helpers = require('./test_helpers');
-var assert = require("assert");
-var Worker = require('../src/worker');
-
 describe('Worker', function(){
-  var testWorker = new Worker();
+  var helpers     = require('./test_helpers');
+  var loadModule  = require('./module-loader').loadModule;
+  var mocks       = require('mocks');
+  var assert      = require("assert");
+
+  var module, fsMock, mockRequest, mockResponse;
+
+  beforeEach(function() {
+    fsMock = mocks.fs.create();
+    mockRequest = mocks.http.request.create();
+    mockResponse = mocks.http.response.create();
+
+    // load the module with mock fs instead of real fs
+    // publish all the private state as an object
+    module = loadModule('../src/worker.js', /* mocks */ {fs: fsMock});
+  });
+
+
+  describe('#job', function() {
+    it('should exist', function(){
+      assert.ok( module.hasOwnProperty('job') );
+    })
+  })
 
   describe('#init()', function(){
     it('should exist', function(){
-      assert.ok( testWorker['init'] );
+      assert.ok( testWorker.hasOwnProperty('init') );
     })
 
     it('should fail if worker.yml does not exist', function(){
@@ -46,6 +64,14 @@ describe('Worker', function(){
       } catch(e) {
         assert.equal('callback called!', e);
       }
+    })
+
+    it('should populate a job into the jobs list', function(){
+      testWorker = new Worker( helpers.successStoryBootstrap() );
+
+      testWorker.init();
+
+      assert.equal(1, testWorker.job);
     })
   });
 });

@@ -4,75 +4,153 @@ describe('Worker', function(){
   var mocks       = require('mocks');
   var assert      = require("assert");
 
-  var module, fsMock, mockRequest, mockResponse;
+  var module, fsMock, mockRequest, mockResponse, Worker;
+
+  Function.prototype.after = function(ms) {
+    var current = this;
+    var args = arguments;
+    function delay(){
+      var arr = [];
+      current.apply(this, arr.slice.call(args, 1));
+    }
+    this.after_timeout = setTimeout(delay, ms);
+    return this.after_timeout;
+  };
+
+  Function.prototype.prevent = function() {
+    clearTimeout(this.after_timeout);
+  }
 
   beforeEach(function() {
     fsMock = mocks.fs.create();
-    mockRequest = mocks.http.request.create();
-    mockResponse = mocks.http.response.create();
 
-    // load the module with mock fs instead of real fs
-    // publish all the private state as an object
-    module = loadModule('../src/worker.js', /* mocks */ {fs: fsMock});
+    Worker = require('../src/worker');
   });
 
 
   describe('#job', function() {
     it('should exist', function(){
-      assert.ok( module.hasOwnProperty('job') );
+      var worker = Worker.create();
+
+      assert.ok( worker.hasOwnProperty('job') );
     })
   })
 
   describe('#init()', function(){
     it('should exist', function(){
-      assert.ok( testWorker.hasOwnProperty('init') );
+      var worker = Worker.create();
+      assert.ok( worker.hasOwnProperty('init') );
     })
 
-    it('should fail if worker.yml does not exist', function(){
-      // arrange
-      testWorker = new Worker( helpers.fileSystemNoExist() );
+    it('should emit no_config event if worker.yml does not exist', function( done ){
+      var worker = Worker.create({ fs: { exists: function(file, ev) { ev(false); } } });
 
-      // act
-      try {
-        testWorker.init();
-        assert.ok(false, "Worker#init did not fail when no config was present");
-      }catch(e) {
-        assert.equal(e, "no config file!");
-      }
+      done.after(1000, "no_config event did not get called when the config was missing!");
+
+      worker.on('no_config', function(){
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
     })
 
-    it('should load the config', function(){
-      // arrange
-      var config = "worker_id: test_worker";
-      testWorker = new Worker( helpers.fileSystemReturnsConfig(config) );
+    it('should emit has_config event if worker.yml exists', function( done ){
+      var worker = Worker.create({ fs: { exists: function(file, ev) { ev(true); }, readFile: function(){} } });
 
-      // act
-      testWorker.init();
+      done.after(1000, "has_config event did not get called when the config exists!");
 
-      // assert
-      assert.equal('test_worker', testWorker.config['worker_id'], "config wasn't loaded correctly!");
+      worker.on('has_config', function(){
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
     })
 
-    it('should call any callback functions passed', function() {
-      testWorker = new Worker( helpers.successStoryBootstrap() );
+    it('should emit config_loaded event if worker.yml is loaded successfully', function( done ){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        }
+      });
 
-      try {
-        testWorker.init(function(){
-          throw "callback called!";
-        });
-        assert.ok(false, "Worker#init did not call the passed callback!");
-      } catch(e) {
-        assert.equal('callback called!', e);
-      }
+      done.after(1000, "config_loaded event did not get called when the config is loaded!");
+
+      worker.on('config_loaded', function(data){
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
     })
 
-    it('should populate a job into the jobs list', function(){
-      testWorker = new Worker( helpers.successStoryBootstrap() );
+    it('should emit picking_job after initialization', function( done ){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        }
+      });
 
-      testWorker.init();
+      done.after(1000, "picking_job event did not get called when initialization was done!");
 
-      assert.equal(1, testWorker.job);
+      worker.on('picking_job', function(data){
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
     })
+  });
+
+  describe('#config', function(){
+    it('should exist', function(){
+      var worker = Worker.create();
+
+      assert.ok( worker.config );
+    })
+
+    it('should be populated if worker.yml is loaded successfully', function( done ){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        }
+      });
+
+      done.after(1000, "config property did not get populated when the config is loaded!");
+
+      worker.on('config_loaded', function(data){
+        assert.notEqual(null, data);
+        assert.equal("testWorker", data.worker_id);
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
+    })
+  });
+
+  describe('picking_job event', function(){
+    it('should be emitted after configuration is loaded', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        }
+      });
+
+      done.after(1000, "picking_job event did not get emitted when the config is loaded!");
+
+      worker.on('picking_job', function(){
+        done.prevent();
+        done();
+      } );
+
+      worker.init();
+    });
   });
 });
 

@@ -40,34 +40,59 @@
 */
 
 
-var fs          = require('fs');
-var yaml        = require('js-yaml');
-var util        = require('util');
-var worker_http = require('./worker_http');
+var ev  = require('events'), EventEmitter = ev.EventEmitter;
+var util = require('util');
 
-function worker() {
-  return {
-    job: null,
-    config: {},
-    init: function( callback ) {
-      var parent = this;
-      var result = opts.fs.existsSync( __dirname + '/worker.yml');
+var Eventer = function(){
+  ev.EventEmitter.call(this);
+};
 
-      if(!result) throw "no config file!";
+util.inherits(Eventer, ev.EventEmitter);
 
-      var config = opts.fs.readFileSync( __dirname + '/worker.yml', null);
-      this.config = yaml.load(config);
+var Worker = {
+  create: function( mocks ) {
+    var e = new Eventer();
 
-      opts.worker_http.jobs.next(this.config.worker_id, function( data ){
-        parent.job = jobBuilder.create( data );
-        if( opts["jobs_next_after"] )
-          opts["jobs_next_after"](data);
-      });
+    var CONFIG_FILE = __dirname + '/worker.yml';
 
-      if(callback) callback.call(this);
+    function dep(name) {
+      mocks[name] = mocks[name] || require(name);
+      return mocks[name];
     }
-  };
-}
+
+    function setup_events() {
+      this.on('has_config', function(){
+        var parent = this;
+        dep('fs').readFile(CONFIG_FILE, null, function( contents ){
+          // load the config
+          parent.config = dep('js-yaml').load(contents);
+
+          e.emit('config_loaded', parent.config);
+          e.emit('picking_job');
+        });
+      });
+    }
+
+    return {
+      job: null,
+      config: {},
+      on: function(name, fn) {
+        e.on(name, fn);
+      },
+      init: function( callback ) {
+        setup_events.call(this);
+
+        dep('fs').exists( CONFIG_FILE, function(exists){
+          if(!exists) {
+            e.emit('no_config');
+          } else {
+            e.emit('has_config');
+          }
+        });
+      }
+    }
+  }
+};
 
 
-module.exports = worker();
+module.exports = Worker;

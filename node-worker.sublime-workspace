@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"work",
+				"worker_http"
+			],
+			[
+				"request",
+				"request_meta"
+			],
+			[
 				"fil",
 				"fileSystemReturnsConfig  (function)"
 			],
@@ -191,7 +199,7 @@
 			"file": "package.json",
 			"settings":
 			{
-				"buffer_size": 354,
+				"buffer_size": 475,
 				"line_ending": "Windows"
 			}
 		},
@@ -207,7 +215,15 @@
 			"file": "src/worker.js",
 			"settings":
 			{
-				"buffer_size": 506,
+				"buffer_size": 2727,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/worker_http.js",
+			"settings":
+			{
+				"buffer_size": 1374,
 				"line_ending": "Windows"
 			}
 		},
@@ -215,15 +231,32 @@
 			"file": "test/test_worker.js",
 			"settings":
 			{
-				"buffer_size": 1388,
+				"buffer_size": 2161,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/module-loader.js",
+			"settings":
+			{
+				"buffer_size": 1011,
+				"line_ending": "Windows",
+				"name": "var vm = require('vm');"
 			}
 		},
 		{
 			"file": "test/test_helpers.js",
 			"settings":
 			{
-				"buffer_size": 560,
+				"buffer_size": 618,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": ".travis.yml",
+			"settings":
+			{
+				"buffer_size": 74,
 				"line_ending": "Windows"
 			}
 		}
@@ -664,7 +697,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -672,15 +705,15 @@
 					"file": "package.json",
 					"settings":
 					{
-						"buffer_size": 354,
+						"buffer_size": 475,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								262,
-								262
+								475,
+								475
 							]
 						],
 						"settings":
@@ -726,15 +759,15 @@
 					"file": "src/worker.js",
 					"settings":
 					{
-						"buffer_size": 506,
+						"buffer_size": 2727,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								208,
-								208
+								660,
+								660
 							]
 						],
 						"settings":
@@ -751,18 +784,46 @@
 				},
 				{
 					"buffer": 3,
-					"file": "test/test_worker.js",
+					"file": "src/worker_http.js",
 					"settings":
 					{
-						"buffer_size": 1388,
+						"buffer_size": 1374,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								994,
-								994
+								27,
+								27
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "test/test_worker.js",
+					"settings":
+					{
+						"buffer_size": 2161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								731,
+								731
 							]
 						],
 						"settings":
@@ -772,25 +833,54 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "test/test_helpers.js",
+					"buffer": 5,
+					"file": "test/module-loader.js",
 					"settings":
 					{
-						"buffer_size": 560,
+						"buffer_size": 1011,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								525,
-								525
+								630,
+								630
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var vm = require('vm');",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "test/test_helpers.js",
+					"settings":
+					{
+						"buffer_size": 618,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								618,
+								618
 							]
 						],
 						"settings":
@@ -798,6 +888,32 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": ".travis.yml",
+					"settings":
+					{
+						"buffer_size": 74,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								74,
+								74
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -850,16 +966,24 @@
 		"selected_items":
 		[
 			[
+				".tra",
+				".travis.yml"
+			],
+			[
+				"worker",
+				"src/worker.js"
+			],
+			[
+				"packa",
+				"package.json"
+			],
+			[
 				"test_help",
 				"test/test_helpers.js"
 			],
 			[
 				"test_wor",
 				"test/test_worker.js"
-			],
-			[
-				"worker",
-				"src/worker.js"
 			],
 			[
 				"app.js",
@@ -1352,14 +1476,6 @@
 			[
 				"projects_con",
 				"app/controllers/projects_controller.rb"
-			],
-			[
-				"projects/header",
-				"app/views/projects/show/_header.html.haml"
-			],
-			[
-				"sidebar",
-				"app/helpers/sidebar_helper.rb"
 			]
 		],
 		"width": 0.0

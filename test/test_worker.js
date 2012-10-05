@@ -151,6 +151,124 @@ describe('Worker', function(){
 
       worker.init();
     });
+
+    it('should make a POST request to proggr website', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        },
+        http: {
+          request: function(options, fn) {
+            assert.equal(options.method, "POST");
+            done.prevent();
+            done();
+          }
+        }
+      });
+
+      done.after(1000, 'picking_job handler did not make POST request to proggr website');
+
+      worker.init();
+    });
+
+    it('should make a POST request to http://proggr.apphb.com/jobs/next', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        },
+        http: {
+          request: function(options, fn) {
+            assert.equal(options.host, "proggr.apphb.com");
+            assert.equal(options.path, '/jobs/next');
+            done.prevent();
+            done();
+          }
+        }
+      });
+
+      done.after(1000, 'picking_job handler did not make POST request to proggr website');
+
+      worker.init();
+    });
+
+    it('should POST worker_id to http://proggr.apphb.com/jobs/next', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        },
+        http: {
+          request: function(options, fn) {
+            assert.ok( options.worker_id );
+            assert.equal( "testWorker", options.worker_id);
+            done.prevent();
+            done();
+          }
+        }
+      });
+
+      done.after(1000, 'picking_job handler did not make POST request to proggr website');
+
+      worker.init();
+    });
+
+    it('should pass response to job creator', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        },
+        './job_creator': {
+          create: function( jobPack ) {
+            assert.ok(jobPack);
+            assert.equal("test", jobPack.type);
+            done.prevent();
+            done();
+          }
+        },
+        http: {
+          request: function(options, fn) {
+            fn({ type: "test" });
+          }
+        }
+      });
+
+      done.after(1000, 'job_creator#create was not called');
+
+      worker.init();
+    });
+
+    it('should emit the picked_job event', function(done){
+      var worker = Worker.create({
+        fs: {
+          exists: function(file, ev) { ev(true); },
+          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        },
+        './job_creator': {
+          create: function( jobPack ) {
+            return jobPack;
+          }
+        },
+        http: {
+          request: function(options, fn) {
+            fn({ type: "test" });
+          }
+        }
+      });
+
+      worker.on('picked_job', function(job){
+        assert.notEqual(null, job);
+        assert.equal("test", job.type);
+        done.prevent();
+        done();
+      });
+
+      done.after(1000, 'job_creator#create was not called');
+
+      worker.init();
+    });
   });
 });
 

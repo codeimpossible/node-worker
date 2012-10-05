@@ -71,6 +71,13 @@ var Worker = {
           e.emit('picking_job');
         });
       });
+
+      this.on('picking_job', function(){
+        dep('http').request({ method: "POST", host: "proggr.apphb.com", path: '/jobs/next', worker_id: this.config.worker_id }, function(res) {
+          var job = dep('./job_creator').create(res);
+          e.emit('picked_job', job);
+        });
+      });
     }
 
     return {

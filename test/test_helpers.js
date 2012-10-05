@@ -1,30 +1,14 @@
-var helpers = {
-  fileSystemNoExist: function() {
-    return {
-      fs: {
-        existsSync: function(path) {
-          return false;
-        }
-      }
-    };
-  },
-  fileSystemReturnsConfig: function( config_contents ) {
-    var _contents = config_contents;
-    return {
-      fs: {
-        existsSync: function( path ) {
-          return true;
-        },
-        readFileSync: function(path) {
-          return _contents;
-        }
-      }
-    }
-  },
-  successStoryBootstrap: function() {
-    var config = "worker_id: test_worker";
-    return this.fileSystemReturnsConfig(config);
+Function.prototype.after = function(ms) {
+  var current = this;
+  var args = arguments;
+  function delay(){
+    var arr = [];
+    current.apply(this, arr.slice.call(args, 1));
   }
+  this.after_timeout = setTimeout(delay, ms);
+  return this.after_timeout;
 };
 
-module.exports = helpers;
+Function.prototype.prevent = function() {
+  clearTimeout(this.after_timeout);
+}

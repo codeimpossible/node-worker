@@ -61,34 +61,38 @@ var Worker = {
     }
 
     function setup_events() {
-      this.on('has_config', function(){
-        var parent = this;
+      var parent = this;
+
+      parent.on('has_config', function(){
+        var worker = parent;
         dep('fs').readFile(CONFIG_FILE, null, function( contents ){
           // load the config
-          parent.config = dep('js-yaml').load(contents);
+          worker.config = dep('js-yaml').load(contents);
 
-          e.emit('config_loaded', parent.config);
+          e.emit('config_loaded', worker.config);
           e.emit('picking_job');
         });
       });
 
-      this.on('picking_job', function(){
-        dep('http').request({ method: "POST", host: "proggr.apphb.com", path: '/jobs/next', worker_id: this.config.worker_id }, function(res) {
+      parent.on('picking_job', function(){
+        dep('http').request({ method: "POST", host: "proggr.apphb.com", path: '/jobs/next', worker_id: parent.config.worker_id }, function(res) {
           var job = dep('./job_creator').create(res);
           e.emit('picked_job', job);
         });
       });
+
+      parent.on('picked_job', function(job){
+        job.run(parent);
+      });
     }
 
-    return {
+    var _worker = {
       job: null,
       config: {},
       on: function(name, fn) {
         e.on(name, fn);
       },
       init: function( callback ) {
-        setup_events.call(this);
-
         dep('fs').exists( CONFIG_FILE, function(exists){
           if(!exists) {
             e.emit('no_config');
@@ -96,8 +100,15 @@ var Worker = {
             e.emit('has_config');
           }
         });
+      },
+      finish_job: function( job ) {
+        e.emit('finish_job', job.data );
       }
-    }
+    };
+
+    setup_events.call(_worker);
+
+    return _worker;
   }
 };
 

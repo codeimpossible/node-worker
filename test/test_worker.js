@@ -1,25 +1,9 @@
 describe('Worker', function(){
   var helpers     = require('./test_helpers');
-  var loadModule  = require('./module-loader').loadModule;
   var mocks       = require('mocks');
   var assert      = require("assert");
 
-  var module, fsMock, mockRequest, mockResponse, Worker;
-
-  Function.prototype.after = function(ms) {
-    var current = this;
-    var args = arguments;
-    function delay(){
-      var arr = [];
-      current.apply(this, arr.slice.call(args, 1));
-    }
-    this.after_timeout = setTimeout(delay, ms);
-    return this.after_timeout;
-  };
-
-  Function.prototype.prevent = function() {
-    clearTimeout(this.after_timeout);
-  }
+  var module, fsMock, Worker;
 
   beforeEach(function() {
     fsMock = mocks.fs.create();
@@ -226,6 +210,7 @@ describe('Worker', function(){
             assert.equal("test", jobPack.type);
             done.prevent();
             done();
+            return { run: function(){} }
           }
         },
         http: {
@@ -253,7 +238,7 @@ describe('Worker', function(){
         },
         http: {
           request: function(options, fn) {
-            fn({ type: "test" });
+            fn({ type: "test", run: function(){} });
           }
         }
       });

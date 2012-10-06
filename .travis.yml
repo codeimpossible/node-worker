@@ -4,5 +4,6 @@ node_js:
   - 0.7
   - 0.8
 branches:
-  only:
-    - master
+  except:
+    - /^exp-.*$/
+    - /^spike-.*$/

@@ -42,6 +42,7 @@
 
 var ev  = require('events'), EventEmitter = ev.EventEmitter;
 var util = require('util');
+var path = require('path');
 
 var Eventer = function(){
   ev.EventEmitter.call(this);
@@ -52,8 +53,9 @@ util.inherits(Eventer, ev.EventEmitter);
 var Worker = {
   create: function( mocks ) {
     var e = new Eventer();
+    var mocks = mocks || {};
 
-    var CONFIG_FILE = __dirname + '/worker.yml';
+    var CONFIG_FILE = path.resolve(__dirname + '/worker.yml');
 
     function dep(name) {
       mocks[name] = mocks[name] || require(name);
@@ -65,7 +67,7 @@ var Worker = {
 
       parent.on('has_config', function(){
         var worker = parent;
-        dep('fs').readFile(CONFIG_FILE, null, function( contents ){
+        dep('fs').readFile(CONFIG_FILE, null, function( err, contents ){
           // load the config
           worker.config = dep('js-yaml').load(contents);
 
@@ -75,10 +77,25 @@ var Worker = {
       });
 
       parent.on('picking_job', function(){
-        dep('http').request({ method: "POST", host: "proggr.apphb.com", path: '/jobs/next', worker_id: parent.config.worker_id }, function(res) {
-          var job = dep('./job_creator').create(res);
-          e.emit('picked_job', job);
+        var post_data = "worker_id=" + parent.config.worker_id;
+        var post_options = {
+          method: "POST",
+          host: "proggr.apphb.com", // TODO: change this to YAML config
+          path: '/jobs/next',       // TODO: change this to YAML config
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': post_data.length
+          }
+        };
+        var request = dep('http').request(post_options, function(res) {
+          res.setEncoding('utf8');
+          res.on('data', function (chunk) {
+            var job = dep('./job_creator').create(JSON.parse(chunk).Data.Job);
+            e.emit('picked_job', job);
+          });
         });
+        request.write(post_data);
+        request.end();
       });
 
       parent.on('picked_job', function(job){
@@ -89,6 +106,7 @@ var Worker = {
     var _worker = {
       job: null,
       config: {},
+      debug: false,
       on: function(name, fn) {
         e.on(name, fn);
       },
@@ -103,6 +121,11 @@ var Worker = {
       },
       finish_job: function( job ) {
         e.emit('finish_job', job.data );
+        setTimeout(function(){
+          // pick another job!
+          e.emit('picking_job');
+        }, 1);
+
       }
     };
 

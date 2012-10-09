@@ -3,6 +3,8 @@ describe('Worker', function(){
   var mocks       = require('mocks');
   var assert      = require("assert");
 
+  var FakeHttp    = require('./stub_http_request');
+
   var module, fsMock, Worker;
 
   beforeEach(function() {
@@ -56,7 +58,7 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         }
       });
 
@@ -74,7 +76,7 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         }
       });
 
@@ -100,7 +102,7 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         }
       });
 
@@ -122,7 +124,7 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         }
       });
 
@@ -140,15 +142,13 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         },
-        http: {
-          request: function(options, fn) {
-            assert.equal(options.method, "POST");
-            done.prevent();
-            done();
-          }
-        }
+        http: new FakeHttp().allow(1).on('request', function(options) {
+          assert.equal(options.method, "POST");
+          done.prevent();
+          done();
+        })
       });
 
       done.after(1000, 'picking_job handler did not make POST request to proggr website');
@@ -160,16 +160,14 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         },
-        http: {
-          request: function(options, fn) {
-            assert.equal(options.host, "proggr.apphb.com");
-            assert.equal(options.path, '/jobs/next');
-            done.prevent();
-            done();
-          }
-        }
+        http: new FakeHttp().allow(1).on('request', function(options) {
+          assert.equal(options.host, "proggr.apphb.com");
+          assert.equal(options.path, '/jobs/next');
+          done.prevent();
+          done();
+        })
       });
 
       done.after(1000, 'picking_job handler did not make POST request to proggr website');
@@ -181,16 +179,13 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         },
-        http: {
-          request: function(options, fn) {
-            assert.ok( options.worker_id );
-            assert.equal( "testWorker", options.worker_id);
-            done.prevent();
-            done();
-          }
-        }
+        http: new FakeHttp().allow(1).on('write', function(data) {
+          assert.equal( "worker_id=testWorker", data);
+          done.prevent();
+          done();
+        })
       });
 
       done.after(1000, 'picking_job handler did not make POST request to proggr website');
@@ -202,7 +197,7 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         },
         './job_creator': {
           create: function( jobPack ) {
@@ -213,11 +208,7 @@ describe('Worker', function(){
             return { run: function(){} }
           }
         },
-        http: {
-          request: function(options, fn) {
-            fn({ type: "test" });
-          }
-        }
+        http: new FakeHttp().allow(1)
       });
 
       done.after(1000, 'job_creator#create was not called');
@@ -229,18 +220,17 @@ describe('Worker', function(){
       var worker = Worker.create({
         fs: {
           exists: function(file, ev) { ev(true); },
-          readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+          readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
         },
         './job_creator': {
           create: function( jobPack ) {
-            return jobPack;
+            return {
+              type: jobPack.type,
+              run: function(){}
+            };
           }
         },
-        http: {
-          request: function(options, fn) {
-            fn({ type: "test", run: function(){} });
-          }
-        }
+        http: new FakeHttp().allow(1)
       });
 
       worker.on('picked_job', function(job){

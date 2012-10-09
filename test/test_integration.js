@@ -1,6 +1,7 @@
 require('./test_helpers');
 describe('Integration', function(){
   var assert      = require("assert");
+  var FakeHttp    = require('./stub_http_request');
 
   var JobCreator, Worker, worker;
 
@@ -14,16 +15,9 @@ describe('Integration', function(){
     worker      = Worker.create({
       fs: {
         exists: function(file, ev) { ev(true); },
-        readFile: function(file, type, ev) { ev("worker_id: testWorker"); }
+        readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
       },
-      http: {
-        request: function(options, fn) {
-          // fn is a callback, send a fake json response back
-          var json = { type: "MathJob", number: 100 };
-          fn(json);
-          this.request = function() {}; // prevent subsequent calls from getting a response
-        }
-      }
+      http: new FakeHttp({ Data: { Job: { type: "MathJob", number: 100 } } }).allow(1)
     });
   });
 
@@ -38,6 +32,37 @@ describe('Integration', function(){
       });
 
       worker.init();
+    });
+  });
+
+  describe('when a worker completes a job', function( ){
+    describe('the worker', function(){
+      it('should ask proggr web api for the next job', function( done ){
+        // configure the worker so that our asserts get called on the subsequent calls to http.request
+        var count = 0;
+        var http = new FakeHttp({ Data: { Job: { type: "MathJob", number: 100 } } }).allow(2);
+
+        http.httpResponse().on('data', function( chunk ) {
+          ++count;
+          if( count > 1 ) {
+            done.prevent();
+            done();
+            assert.equal(2, count);
+          }
+        });
+
+        worker = Worker.create({
+          fs: {
+            exists: function(file, ev) { ev(true); },
+            readFile: function(file, type, ev) { ev(null, "worker_id: testWorker"); }
+          },
+          http: http
+        });
+
+        done.after(1000, 'Worker did not attempt to find more work!' );
+
+        worker.init();
+      });
     });
   });
 });

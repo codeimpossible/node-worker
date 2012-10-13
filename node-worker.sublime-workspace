@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"New",
+				"New-BackUpFolder"
+			],
+			[
+				"opt",
+				"opt_dest_foldername"
+			],
+			[
+				"config",
+				"configfile"
+			],
+			[
 				"work",
 				"worker_http"
 			],
@@ -207,7 +219,7 @@
 			"file": "src/app.js",
 			"settings":
 			{
-				"buffer_size": 275,
+				"buffer_size": 1025,
 				"line_ending": "Windows"
 			}
 		},
@@ -215,15 +227,7 @@
 			"file": "src/worker.js",
 			"settings":
 			{
-				"buffer_size": 2727,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/worker_http.js",
-			"settings":
-			{
-				"buffer_size": 1374,
+				"buffer_size": 4399,
 				"line_ending": "Windows"
 			}
 		},
@@ -231,32 +235,84 @@
 			"file": "test/test_worker.js",
 			"settings":
 			{
-				"buffer_size": 2161,
+				"buffer_size": 7050,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "test/module-loader.js",
+			"file": "/C/Users/jared/src/psh-backup/backup.ps1",
 			"settings":
 			{
-				"buffer_size": 1011,
+				"buffer_size": 847,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jared/Src/psh-backup/.gitignore",
+			"settings":
+			{
+				"buffer_size": 6,
 				"line_ending": "Windows",
-				"name": "var vm = require('vm');"
+				"name": ".last"
 			}
 		},
 		{
-			"file": "test/test_helpers.js",
+			"file": "/C/Users/jared/Dropbox/bin/apps/psh-backup/.dirs",
 			"settings":
 			{
-				"buffer_size": 618,
+				"buffer_size": 24,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": ".travis.yml",
+			"file": "/C/Users/jared/Src/psh-backup/.dirs",
 			"settings":
 			{
-				"buffer_size": 74,
+				"buffer_size": 21,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jared/Src/psh-backup/globals.ps1",
+			"settings":
+			{
+				"buffer_size": 550,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "$opt_dest_foldername = (Get-Date).tostring() -replace \"[:\\s/]\", \"_\"\n$opt_dest_fullpath = \"\\\\scooterbubble\\jared\\machine_backups\\eich\\$opt_dest_foldername\"\n",
+			"file": "/C/Users/jared/Src/psh-backup/options.ps1",
+			"file_size": 137,
+			"file_write_time": 129943141949733708,
+			"settings":
+			{
+				"buffer_size": 155,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jared/Src/node-worker/test/stub_http_response.js",
+			"settings":
+			{
+				"buffer_size": 537,
+				"line_ending": "Windows",
+				"name": "// setEncoding"
+			}
+		},
+		{
+			"file": "/C/Users/jared/Src/node-worker/test/stub_http_request.js",
+			"settings":
+			{
+				"buffer_size": 1387,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/test_integration.js",
+			"settings":
+			{
+				"buffer_size": 1962,
 				"line_ending": "Windows"
 			}
 		}
@@ -267,6 +323,22 @@
 		"height": 60.0,
 		"selected_items":
 		[
+			[
+				"power",
+				"Set Syntax: Powershell v2"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"form",
+				"Format: Javascript"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
 			[
 				"remo",
 				"Package Control: Remove Package"
@@ -293,10 +365,6 @@
 			],
 			[
 				"rem",
-				"Package Control: Remove Package"
-			],
-			[
-				"remove",
 				"Package Control: Remove Package"
 			],
 			[
@@ -357,6 +425,18 @@
 	},
 	"file_history":
 	[
+		"/C/Users/jared/Src/psh-backup/.dir",
+		"/C/Users/jared/Downloads/bootstrap-lightbox.js",
+		"/C/Users/jared/Src/psh-backup/.last",
+		"/C/Users/jared/Src/psh-backup/.config",
+		"/C/Users/jared/src/node-worker/src/worker.yml",
+		"/C/Users/jared/src/node-worker/.travis.yml",
+		"/C/Users/jared/src/node-worker/test/test_helpers.js",
+		"/C/Users/jared/src/node-worker/test/module-loader.js",
+		"/C/Users/jared/src/node-worker/test/test_job_creator.js",
+		"/C/Users/jared/src/proggr/data/Proggr.sql",
+		"/C/Users/jared/src/node-worker/src/worker_http.js",
+		"/c/windows/system/drivers/etc/hosts",
 		"/C/Users/jared/Dropbox/get_commits.html",
 		"/C/Users/jared/Dropbox/Code/javascript.test.js",
 		"/C/Users/jared/Dropbox/jquery.test.html",
@@ -472,19 +552,7 @@
 		"/Volumes/work/ohloh/db/migrate/089_add_factoids_max_count.rb",
 		"/Volumes/work/ohloh/app/models/factoid_age_old.rb",
 		"/Volumes/work/ohloh/app/views/projects/show/_links.html.haml",
-		"/Volumes/work/ohloh/app/views/projects/show/_code_locations.html.haml",
-		"/Users/jbarboza/Dropbox/ohcard/project_page_notes.txt",
-		"/Volumes/work/ohloh/app/models/factiod_distribution.rb",
-		"/Volumes/work/ohloh/app/views/projects/_topleft.html.haml",
-		"/Volumes/work/ohloh/app/views/projects/show/_community_rating.html.haml",
-		"/Volumes/work/ohloh/app/controllers/analyses_controller.rb",
-		"/Volumes/work/ohloh/app/views/analyses/_commit_volume_chart.html.haml",
-		"/Volumes/work/ohloh/app/helpers/charting_helper.rb",
-		"/Volumes/work/ohloh/app/models/factoid_staff.rb",
-		"/Volumes/work/ohloh/app/views/projects/show/_header.html.haml",
-		"/Volumes/work/ohloh/app/models/report.rb",
-		"/Volumes/work/ohloh/app/models/analysis/reports.rb",
-		"/Volumes/work/ohloh/app/helpers/sidebar_helper.rb"
+		"/Volumes/work/ohloh/app/views/projects/show/_code_locations.html.haml"
 	],
 	"find":
 	{
@@ -697,7 +765,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -733,20 +801,22 @@
 					"file": "src/app.js",
 					"settings":
 					{
-						"buffer_size": 275,
+						"buffer_size": 1025,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								27,
-								27
+								1025,
+								1025
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -759,15 +829,15 @@
 					"file": "src/worker.js",
 					"settings":
 					{
-						"buffer_size": 2727,
+						"buffer_size": 4399,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								660,
-								660
+								3578,
+								3578
 							]
 						],
 						"settings":
@@ -777,58 +847,58 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2088.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "src/worker_http.js",
+					"file": "test/test_worker.js",
 					"settings":
 					{
-						"buffer_size": 1374,
+						"buffer_size": 7050,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								27,
-								27
+								2493,
+								2493
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1740.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "test/test_worker.js",
+					"file": "/C/Users/jared/src/psh-backup/backup.ps1",
 					"settings":
 					{
-						"buffer_size": 2161,
+						"buffer_size": 847,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								731,
-								731
+								99,
+								99
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/PowerShell/Support/PowershellSyntax.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
@@ -840,26 +910,24 @@
 				},
 				{
 					"buffer": 5,
-					"file": "test/module-loader.js",
+					"file": "/C/Users/jared/Src/psh-backup/.gitignore",
 					"settings":
 					{
-						"buffer_size": 1011,
+						"buffer_size": 6,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								630,
-								630
+								6,
+								6
 							]
 						],
 						"settings":
 						{
-							"auto_name": "var vm = require('vm');",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": ".last",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -869,22 +937,129 @@
 				},
 				{
 					"buffer": 6,
-					"file": "test/test_helpers.js",
+					"file": "/C/Users/jared/Dropbox/bin/apps/psh-backup/.dirs",
 					"settings":
 					{
-						"buffer_size": 618,
+						"buffer_size": 24,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								618,
-								618
+								24,
+								24
 							]
 						],
 						"settings":
 						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/jared/Src/psh-backup/.dirs",
+					"settings":
+					{
+						"buffer_size": 21,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/jared/Src/psh-backup/globals.ps1",
+					"settings":
+					{
+						"buffer_size": 550,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								28,
+								28
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PowerShell/Support/PowershellSyntax.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/jared/Src/psh-backup/options.ps1",
+					"settings":
+					{
+						"buffer_size": 155,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								92,
+								105
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PowerShell/Support/PowershellSyntax.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/C/Users/jared/Src/node-worker/test/stub_http_response.js",
+					"settings":
+					{
+						"buffer_size": 537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								42,
+								42
+							]
+						],
+						"settings":
+						{
+							"auto_name": "// setEncoding",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
@@ -896,27 +1071,57 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": ".travis.yml",
+					"buffer": 11,
+					"file": "/C/Users/jared/Src/node-worker/test/stub_http_request.js",
 					"settings":
 					{
-						"buffer_size": 74,
+						"buffer_size": 1387,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								74,
-								74
+								968,
+								968
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/YAML/YAML.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 174.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "test/test_integration.js",
+					"settings":
+					{
+						"buffer_size": 1962,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								980,
+								980
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 348.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -965,6 +1170,30 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"test_inte",
+				"test/test_integration.js"
+			],
+			[
+				"test_wo",
+				"test/test_worker.js"
+			],
+			[
+				"test_job",
+				"test/test_job_creator.js"
+			],
+			[
+				"test_jo",
+				"test/test_job_creator.js"
+			],
+			[
+				"worker.y",
+				"src/worker.yml"
+			],
+			[
+				"inte",
+				"test/test_integration.js"
+			],
 			[
 				".tra",
 				".travis.yml"
@@ -1452,30 +1681,6 @@
 			[
 				"factoid_help",
 				"app/helpers/factoids_helper.rb"
-			],
-			[
-				"license.rb",
-				"app/models/license.rb"
-			],
-			[
-				"project_h",
-				"app/helpers/projects_helper.rb"
-			],
-			[
-				"_licenses",
-				"app/views/projects/show/_licenses.html.haml"
-			],
-			[
-				"projects/top",
-				"app/views/projects/_topleft.html.haml"
-			],
-			[
-				"project_fi",
-				"app/controllers/filters/project_filters.rb"
-			],
-			[
-				"projects_con",
-				"app/controllers/projects_controller.rb"
 			]
 		],
 		"width": 0.0
